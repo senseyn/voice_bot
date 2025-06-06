@@ -37,6 +37,7 @@ async def main():
     dp.include_router(start_router)
     print("БОТ ЗАПУЩЕН")
     await bot.delete_webhook(drop_pending_updates=True)
+    print("..")
     await dp.start_polling(bot)
 
 
@@ -45,3 +46,4 @@ if __name__ == "__main__":
         asyncio.run(main())
     except KeyboardInterrupt:
         print("БОТ ОСТАНОВЛЕН")
+
