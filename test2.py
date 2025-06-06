@@ -38,6 +38,7 @@ async def main():
     print("БОТ ЗАПУЩЕН")
     await bot.delete_webhook(drop_pending_updates=True)
     print("..")
+    print("..")
     await dp.start_polling(bot)
 
 
