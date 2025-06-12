@@ -4,9 +4,12 @@ import logging
 from aiogram.enums import ChatAction
 from aiogram import Bot, Dispatcher, types, Router, F
 from aiogram.fsm.storage.memory import MemoryStorage
-from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton, Message
+from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton, Message, BotCommand, BotCommandScopeDefault
+#==========ИМПОРТ МОИХ ФАЙЛОВ=========
+from welcome import print_start_banner
 
-logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", datefmt='%Y-%m-%d %H:%M:%S') # Формат: ГГГГ-ММ-ДД ЧЧ:ММ:СС
+logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+                    datefmt='%Y-%m-%d %H:%M:%S')  # Формат: ГГГГ-ММ-ДД ЧЧ:ММ:СС
 logger = logging.getLogger(__name__)
 
 bot = Bot(token='7808838750:AAGkavfg9KKEfLbrPaC9Z0noGXQWmb8GqEU')
@@ -14,6 +17,22 @@ dp = Dispatcher(storage=MemoryStorage())
 start_router = Router()
 
 
+#======================СОЗДАНИЕ СПИСКА КОМАНД================
+async def set_commands():
+    commands = [BotCommand(command='start', description='перезапуск бота'),
+                BotCommand(command='play', description='тестовая функ'),
+                BotCommand(command='s', description='тестовая функ')]
+    await bot.set_my_commands(commands, BotCommandScopeDefault())
+
+
+#=======================ЭКСПЕРИМЕНТЫ==========================
+@start_router.message(F.text == "/s")
+async def animate_text(message: types.Message):
+    await message.delete()
+    name = message.from_user.first_name
+    text = f"Привет {name}"
+
+#=============================================================
 @start_router.message(F.text == "/start")
 async def start_handler(message: Message):
     keyboard = InlineKeyboardMarkup(inline_keyboard=[
@@ -29,6 +48,7 @@ async def handle_play_message(message: Message):
     await message.bot.send_chat_action(
         chat_id=message.chat.id,
         action=ChatAction.TYPING
+
     )
     await asyncio.sleep(1)
     # Здесь может быть логика вашей игры
@@ -49,10 +69,10 @@ async def callback_btn2(callback: types.CallbackQuery):
 
 async def main():
     dp.include_router(start_router)
-    print("БОТ ЗАПУЩЕН")
     await bot.delete_webhook(drop_pending_updates=True)
-    print("..")
-    print("..")
+    await set_commands()  # УСТАНОВКА МЕНЮ КОМАНД
+    print("БОТ ЗАПУЩЕН")
+    print_start_banner() #ЗАПУСК ЗАСТАВКИ В ТЕРМИНАЛЕ ЛИНУКС
     await dp.start_polling(bot)
 
 
@@ -61,4 +81,3 @@ if __name__ == "__main__":
         asyncio.run(main())
     except KeyboardInterrupt:
         print("БОТ ОСТАНОВЛЕН")
-
