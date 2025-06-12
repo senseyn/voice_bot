@@ -10,7 +10,7 @@ from aiogram.fsm.storage.memory import MemoryStorage
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton, Message, BotCommand, BotCommandScopeDefault
 #==========ИМПОРТ МОИХ ФАЙЛОВ=========
 from handlers.welcome import print_start_banner
-from handlers.style_text import start_text_bot, stop_text_bot
+from handlers.style_text import start_text_bot, stop_text_bot, bot_text_baner
 #=====================================
 
 logging.basicConfig(level=logging.INFO,
@@ -36,8 +36,8 @@ async def set_commands():
 async def animate_text(message: types.Message):
     await message.delete()
     name = message.from_user.first_name
-    text = f"Привет {name}"
-    await message.answer(text)
+    text = bot_text_baner(name) #ОТПРАВЛЯЕМ И ПРИНИМАЕМ ТЕКСТ С ПАРАМЕТРОМ NAME
+    await message.answer(text, parse_mode="HTML")
 
 
 #=============================================================
