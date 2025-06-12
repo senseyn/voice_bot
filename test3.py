@@ -11,6 +11,7 @@ from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton, Message, B
 #==========ИМПОРТ МОИХ ФАЙЛОВ=========
 from handlers.welcome import print_start_banner
 from handlers.style_text import start_text_bot, stop_text_bot
+#=====================================
 
 logging.basicConfig(level=logging.INFO,
                     format="\033[1;30;47m%(asctime)s - %(name)s - %(levelname)s - %(message)s\033[0m",
@@ -81,7 +82,7 @@ async def main():
         await set_commands()  # УСТАНОВКА МЕНЮ КОМАНД
         start_text_bot()
         print_start_banner()
-        await dp.start_polling(bot) #СТАРТ БОТА
+        await dp.start_polling(bot)  #СТАРТ БОТА
     except (TelegramNetworkError, ClientConnectorError) as e:
         print("\033[1;41m⚠️ Сетевая ошибка: не удалось подключиться к Telegram API\033[0m")
         logging.error(f"[1;41mОшибка подключения: {e}")
