@@ -6,7 +6,7 @@ from aiogram import Bot, Dispatcher, types, Router, F
 from aiogram.fsm.storage.memory import MemoryStorage
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton, Message, BotCommand, BotCommandScopeDefault
 #==========ИМПОРТ МОИХ ФАЙЛОВ=========
-from welcome import print_start_banner
+from handlers.welcome import print_start_banner
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
                     datefmt='%Y-%m-%d %H:%M:%S')  # Формат: ГГГГ-ММ-ДД ЧЧ:ММ:СС
