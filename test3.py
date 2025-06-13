@@ -7,10 +7,11 @@ from aiohttp import ClientConnectorError
 from aiogram.enums import ChatAction
 from aiogram import Bot, Dispatcher, types, Router, F
 from aiogram.fsm.storage.memory import MemoryStorage
-from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton, Message, BotCommand, BotCommandScopeDefault
+from aiogram.types import Message, BotCommand, BotCommandScopeDefault
 #==========ИМПОРТ МОИХ ФАЙЛОВ=========
 from handlers.welcome import print_start_banner
 from handlers.style_text import start_text_bot, stop_text_bot, bot_text_baner
+
 #=====================================
 
 logging.basicConfig(level=logging.INFO,
@@ -32,37 +33,20 @@ async def set_commands():
 
 
 #=======================ЭКСПЕРИМЕНТЫ==========================
-@start_router.message(F.text == "/s")
+@start_router.message(F.text == "/start")
 async def animate_text(message: types.Message):
     await message.delete()
+    await message.bot.send_chat_action(
+        chat_id=message.chat.id,
+        action=ChatAction.TYPING
+    )
+    await asyncio.sleep(0.5)
     name = message.from_user.first_name
-    text = bot_text_baner(name) #ОТПРАВЛЯЕМ И ПРИНИМАЕМ ТЕКСТ С ПАРАМЕТРОМ NAME
+    text = bot_text_baner(name)  #ОТПРАВЛЯЕМ И ПРИНИМАЕМ ТЕКСТ С ПАРАМЕТРОМ NAME
     await message.answer(text, parse_mode="HTML")
 
 
 #=============================================================
-@start_router.message(F.text == "/start")
-async def start_handler(message: Message):
-    keyboard = InlineKeyboardMarkup(inline_keyboard=[
-        [InlineKeyboardButton(text="Кнопка 1", callback_data="btn1")],
-        [InlineKeyboardButton(text="Кнопка 2", callback_data="btn2")]
-    ])
-    await message.answer("Выберите кнопку:", reply_markup=keyboard)
-
-
-@start_router.message(F.text == "/play")
-async def handle_play_message(message: Message):
-    # Показываем действие "играет в игру"
-    await message.bot.send_chat_action(
-        chat_id=message.chat.id,
-        action=ChatAction.TYPING
-
-    )
-    await asyncio.sleep(1)
-    # Здесь может быть логика вашей игры
-    await message.answer("Вы начали игру!")
-
-
 @start_router.callback_query(F.data == "btn1")
 async def callback_btn1(callback: types.CallbackQuery):
     await callback.message.answer("Вы нажали кнопку 1")
